@@ -1,0 +1,45 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>pl.ksitarski</groupId>
+    <artifactId>icf</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0</version>
+    <name>ICF</name>
+
+    <modules>
+        <module>core</module>
+        <module>comparators/jimagehash_based</module>
+        <module>comparators/opencv_based</module>
+        <module>comparators/standard</module>
+        <module>preprocessing/standard</module>
+        <module>gui</module>
+        <!-- <module>web</module> --> <!-- uses other version than the rest of the project -->
+    </modules>
+
+    <properties>
+        <icf.version>1.0.0</icf.version>
+        <icf.identifier.platform>win</icf.identifier.platform>
+        <java.version>14</java.version>
+        <java.source.version>${java.version}</java.source.version>
+        <java.target.version>${java.version}</java.target.version>
+    </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>14</source>
+                        <target>14</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>
