@@ -40,6 +40,7 @@ public class OptimizationsLifetimeManager implements LifetimeManager<IcfOptimize
     private final IcfOptimizedImages[] icfOptimizedImages; //batch loaded optimized images
     private final Map<Long, Long> accessCount; //number of times images can be accessed before eviction. if empty, has not been loaded yet
     private final List<Exception> exceptions = new ArrayList<>();
+    private final boolean[] failedToLoad;
 
     //lookup
     private final Map<Long, Integer> indexOfId;
@@ -56,6 +57,7 @@ public class OptimizationsLifetimeManager implements LifetimeManager<IcfOptimize
 
         this.ids = ids;
         this.icfOptimizedImages = new IcfOptimizedImages[ids.size()];
+        this.failedToLoad = new boolean[ids.size()];
         this.loadsBeforeEvictions = loadsBeforeEvictions;
         indexOfId = new HashMap<>(ids.size() * 3, 1f);
         accessCount = new HashMap<>(ids.size() * 3, 1f);
@@ -73,6 +75,10 @@ public class OptimizationsLifetimeManager implements LifetimeManager<IcfOptimize
         int index = indexOfId.get(id);
 
         if (icfOptimizedImages[index] == null) {
+            if (failedToLoad[index]) {
+                return loadExists(id, index);
+            }
+
             StopWatch watch = new StopWatch();
             watch.start();
 
@@ -107,10 +113,17 @@ public class OptimizationsLifetimeManager implements LifetimeManager<IcfOptimize
     @Override
     public void provide(IcfOptimizedImages images, long id) {
         int index = indexOfId.get(id);
-        icfOptimizedImages[index] = images;
-        imagesLoaded.incrementAndGet();
-        accessCount.put(id, loadsBeforeEvictions);
-        loadingProgress.accept(imagesLoaded.get() / ids.size() * 1.0);
+        if (images == null) {
+            failedToLoad[index] = true;
+            imagesLoaded.incrementAndGet();
+            accessCount.put(id, loadsBeforeEvictions);
+            loadingProgress.accept(imagesLoaded.get() / ids.size() * 1.0);
+        } else {
+            icfOptimizedImages[index] = images;
+            imagesLoaded.incrementAndGet();
+            accessCount.put(id, loadsBeforeEvictions);
+            loadingProgress.accept(imagesLoaded.get() / ids.size() * 1.0);
+        }
     }
 
     @Override

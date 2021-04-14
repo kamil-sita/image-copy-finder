@@ -106,7 +106,7 @@ public class IcfEngineDispatcher {
     }
 
 
-    private static ComparisonProgress getNullComparisonProgress() {
+    public static ComparisonProgress getNullComparisonProgress() {
         return new ComparisonProgress() {
             @Override
             public void updateLoading(double i) {

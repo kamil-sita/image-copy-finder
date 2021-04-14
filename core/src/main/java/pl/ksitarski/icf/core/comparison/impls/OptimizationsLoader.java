@@ -31,10 +31,10 @@ public class OptimizationsLoader implements Loader<IcfOptimizedImages> {
     private final IcfCollection database;
 
     //comparators in DB, optimizations might be in DB
-    private final Set<ImageComparator> comparatorsInDb;
+    private final Set<ImageComparator> serializableComparators;
 
     //comparators not in DB, optimizations cannot be in DB
-    private final Set<ImageComparator> comparatorsNotInDb;
+    private final Set<ImageComparator> nonSerializableComparators;
 
     private final int id; //id of this batch loader for logging purposes
 
@@ -43,19 +43,19 @@ public class OptimizationsLoader implements Loader<IcfOptimizedImages> {
         this.database = database;
 
 
-        comparatorsInDb = new HashSet<>();
-        comparatorsNotInDb = new HashSet<>();
+        serializableComparators = new HashSet<>();
+        nonSerializableComparators = new HashSet<>();
 
         for (ImageComparator comparator : comparators) {
             if (comparator.isSerializable()) {
-                comparatorsInDb.add(comparator);
+                serializableComparators.add(comparator);
             } else {
-                comparatorsNotInDb.add(comparator);
+                nonSerializableComparators.add(comparator);
             }
         }
 
         this.id = idGenerator.getAndIncrement();
-        logger.info("[{}] Batch loader with id {} created", id, id);
+        logger.info("[{}] Optimizations loader with id {} created", id, id);
     }
 
 
@@ -66,12 +66,12 @@ public class OptimizationsLoader implements Loader<IcfOptimizedImages> {
 
 
         //loading optimizations already present in database
-        List<IcfFileOptOrm> optimizationsPresentInDb = loadOptimizationsFromDatabase(idsToLoad, comparatorsInDb, optimizations);
+        List<IcfFileOptOrm> optimizationsPresentInDb = loadOptimizationsFromDatabase(idsToLoad, serializableComparators, optimizations);
 
-        //checking what still needs to be loaded
-        Set<Long> filesThatWillNeedToBeLoaded = checkWhatNeedsToBeLoaded(idsToLoad, comparatorsInDb, comparatorsNotInDb, optimizationsPresentInDb, comparatorsNeededPerFile);
+        //checking what still needs to be loaded from disk - not present in DB
+        Set<Long> filesThatWillNeedToBeLoaded = checkWhatNeedsToBeLoaded(idsToLoad, serializableComparators, nonSerializableComparators, optimizationsPresentInDb, comparatorsNeededPerFile);
 
-        updateFilesInDb(optimizations, filesThatWillNeedToBeLoaded, comparatorsNeededPerFile, loaderTarget);
+        loadNotLoadedFilesIntoDb(optimizations, filesThatWillNeedToBeLoaded, comparatorsNeededPerFile, loaderTarget);
 
         List<IcfFileOrm> files = new IcfFileDao().getByIds(idsToLoad);
 
@@ -79,8 +79,12 @@ public class OptimizationsLoader implements Loader<IcfOptimizedImages> {
             ImageInDatabase imageInDatabase = file.toImageInDatabase();
 
             long id = file.getId();
-            var optimizationMap = optimizations.get(file.getId());
-            loaderTarget.provide(new IcfOptimizedImages(optimizationMap, imageInDatabase), id);
+            var optimizationMap = optimizations.get(id);
+            if (optimizationMap == null) {
+                loaderTarget.provide(null, id);
+            } else {
+                loaderTarget.provide(new IcfOptimizedImages(optimizationMap, imageInDatabase), id);
+            }
         }
     }
 
@@ -99,13 +103,13 @@ public class OptimizationsLoader implements Loader<IcfOptimizedImages> {
         return filesThatWillNeedToBeLoaded;
     }
 
-    private void updateFilesInDb(Map<Long, Map<ImageComparator, IcfOptimizedImage>> optimizations, Set<Long> filesThatWillNeedToBeLoaded, Map<Long, Set<ImageComparator>> comparatorsNeededPerFile, LoaderTarget<IcfOptimizedImages> loaderTarget) {
-        List<IcfFileOrm> filesThatNeedToBeLoaded;
+    private void loadNotLoadedFilesIntoDb(Map<Long, Map<ImageComparator, IcfOptimizedImage>> optimizations, Set<Long> filesThatWillNeedToBeLoaded, Map<Long, Set<ImageComparator>> comparatorsNeededPerFile, LoaderTarget<IcfOptimizedImages> loaderTarget) {
         if (filesThatWillNeedToBeLoaded.isEmpty()) {
             return;
-        } else {
-            filesThatNeedToBeLoaded = new IcfFileDao().getByIds(filesThatWillNeedToBeLoaded);
         }
+
+        List<IcfFileOrm> filesThatNeedToBeLoaded = new IcfFileDao().getByIds(filesThatWillNeedToBeLoaded);
+
 
         List<IcfFileOptOrm> optsToSaveInDb = new ArrayList<>();
         List<IcfFileOrm> filesToUpdateInDb = new ArrayList<>();

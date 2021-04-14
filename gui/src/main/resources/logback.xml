@@ -1,0 +1,12 @@
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%yellow(%d{dd-MM-yyyy}) %green(%d{HH:mm:ss.SSS}) %magenta([%12.12thread]) %highlight(%-5level) %logger{%50.50}.%M - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="pl.ksitarski" level="debug" />
+    <logger name="org.hibernate" level="warn" />
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

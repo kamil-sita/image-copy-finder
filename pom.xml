@@ -7,7 +7,7 @@
     <groupId>pl.ksitarski</groupId>
     <artifactId>icf</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <name>ICF</name>
 
     <modules>
@@ -21,7 +21,7 @@
     </modules>
 
     <properties>
-        <icf.version>1.0.0</icf.version>
+        <icf.version>1.1.0</icf.version>
         <icf.identifier.platform>win</icf.identifier.platform>
         <java.version>14</java.version>
         <java.source.version>${java.version}</java.source.version>
