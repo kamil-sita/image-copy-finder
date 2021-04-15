@@ -10,6 +10,7 @@ import pl.ksitarski.icf.core.db.IcfCollection;
 import pl.ksitarski.icf.core.image.IcfImage;
 import pl.ksitarski.icf.core.image.IcfOptimizedImage;
 import pl.ksitarski.icf.core.image.IcfOptimizedImages;
+import pl.ksitarski.icf.core.imageloader.ImageLoader;
 import pl.ksitarski.icf.core.jpa.dao.IcfFileDao;
 import pl.ksitarski.icf.core.jpa.dao.IcfFileOptDao;
 import pl.ksitarski.icf.core.jpa.orm.IcfFileOptOrm;
@@ -38,9 +39,12 @@ public class OptimizationsLoader implements Loader<IcfOptimizedImages> {
 
     private final int id; //id of this batch loader for logging purposes
 
-    public OptimizationsLoader(Set<ImageComparator> comparators, IcfCollection database) {
+    private final ImageLoader imageLoader;
+
+    public OptimizationsLoader(Set<ImageComparator> comparators, IcfCollection database, ImageLoader imageLoader) {
         this.comparators = comparators;
         this.database = database;
+        this.imageLoader = imageLoader;
 
 
         serializableComparators = new HashSet<>();
@@ -114,6 +118,9 @@ public class OptimizationsLoader implements Loader<IcfOptimizedImages> {
         List<IcfFileOptOrm> optsToSaveInDb = new ArrayList<>();
         List<IcfFileOrm> filesToUpdateInDb = new ArrayList<>();
 
+        for (int i = 0; i < filesThatNeedToBeLoaded.size(); i++) {
+
+        }
 
         for (IcfFileOrm file : filesThatNeedToBeLoaded) {
             String path = file.getFilePath();
@@ -124,52 +131,54 @@ public class OptimizationsLoader implements Loader<IcfOptimizedImages> {
 
             fullPath += path;
 
-            BufferedImage bufferedImage;
-            try {
-                bufferedImage = BufferedImageUtil.load(Path.of(fullPath));
-            } catch (IOException e) {
-                e.printStackTrace();
-                loaderTarget.reportException(e);
-                continue;
-            }
-            IcfImage icfImage = new IcfImage(file.toImageInDatabase(), bufferedImage);
 
-            //settings statistics for files.
-            //since first load does not have any comparators for sure, this path will fire for the first file load
-            if (!file.getStatisticsPresent()) {
-                file.setHue(icfImage.getHue());
-                file.setSaturation(icfImage.getSaturation());
-                file.setValue(icfImage.getValue());
+            imageLoader.loadAsync(
+                    Path.of(fullPath),
+                    exception -> {
+                        exception.printStackTrace();
+                        loaderTarget.reportException(exception);
+                    },
+                    bufferedImage -> {
 
-                file.setR(icfImage.getR());
-                file.setG(icfImage.getG());
-                file.setB(icfImage.getB());
+                        IcfImage icfImage = new IcfImage(file.toImageInDatabase(), bufferedImage);
 
-                file.setWidthHeightRatio(icfImage.getWidthHeightRatio());
-                file.setHeight(icfImage.getHeight());
-                file.setWidth(icfImage.getWidth());
+                        //settings statistics for files.
+                        //since first load does not have any comparators for sure, this path will fire for the first file load
+                        if (!file.getStatisticsPresent()) {
+                            file.setHue(icfImage.getHue());
+                            file.setSaturation(icfImage.getSaturation());
+                            file.setValue(icfImage.getValue());
 
-                file.setStatisticsPresent(true);
+                            file.setR(icfImage.getR());
+                            file.setG(icfImage.getG());
+                            file.setB(icfImage.getB());
 
-                filesToUpdateInDb.add(file);
-            }
+                            file.setWidthHeightRatio(icfImage.getWidthHeightRatio());
+                            file.setHeight(icfImage.getHeight());
+                            file.setWidth(icfImage.getWidth());
+
+                            file.setStatisticsPresent(true);
+
+                            filesToUpdateInDb.add(file);
+                        }
 
 
-            for (ImageComparator comparator : comparatorsNeededPerFile.get(file.getId())) {
-                IcfOptimizedImage image = null;
-                try {
-                    image = comparator.optimizeImage(icfImage);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    loaderTarget.reportException(e);
-                    continue;
-                }
-                put(optimizations, file.getId(), comparator, image);
-                if (comparator.isSerializable()) {
-                    IcfFileOptOrm optOrm = new IcfFileOptOrm(image.getSerialized(), comparator.canonicalName(), file);
-                    optsToSaveInDb.add(optOrm);
-                }
-            }
+                        for (ImageComparator comparator : comparatorsNeededPerFile.get(file.getId())) {
+                            IcfOptimizedImage image = null;
+                            try {
+                                image = comparator.optimizeImage(icfImage);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                loaderTarget.reportException(e);
+                                continue;
+                            }
+                            put(optimizations, file.getId(), comparator, image);
+                            if (comparator.isSerializable()) {
+                                IcfFileOptOrm optOrm = new IcfFileOptOrm(image.getSerialized(), comparator.canonicalName(), file);
+                                optsToSaveInDb.add(optOrm);
+                            }
+                        }
+            });
         }
 
         new IcfFileDao().update(filesToUpdateInDb);

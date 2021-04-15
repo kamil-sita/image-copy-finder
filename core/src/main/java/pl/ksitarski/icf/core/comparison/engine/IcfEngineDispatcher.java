@@ -13,6 +13,8 @@ import pl.ksitarski.icf.core.comparison.impls.OptimizationsLoader;
 import pl.ksitarski.icf.core.db.IcfCollection;
 import pl.ksitarski.icf.core.exc.AlgorithmFailureException;
 import pl.ksitarski.icf.core.image.IcfOptimizedImages;
+import pl.ksitarski.icf.core.imageloader.ImageLoader;
+import pl.ksitarski.icf.core.imageloader.ImageLoaderImpl;
 import pl.ksitarski.icf.core.util.MultipleJobExecutor;
 
 import java.util.concurrent.ExecutorService;
@@ -24,11 +26,11 @@ public class IcfEngineDispatcher {
     private final static Logger logger = LoggerFactory.getLogger(IcfEngineDispatcher.class);
 
     public ImageComparingResults findDuplicatesInLibrary(IcfCollection collection, ComplexImageComparator comparator, IcfSettings settings) {
-        return findDuplicatesInLibrary(collection, comparator, settings, getNullComparisonProgress());
+        return findDuplicatesInLibrary(collection, comparator, settings, getNullComparisonProgress(), getImageLoader());
     }
 
-    public ImageComparingResults findDuplicatesInLibrary(IcfCollection collection, ComplexImageComparator comparator, IcfSettings settings, ComparisonProgress comparisonProgress) {
-        Loader<IcfOptimizedImages> loader = new OptimizationsLoader(comparator.getImageComparators(), collection);
+    public ImageComparingResults findDuplicatesInLibrary(IcfCollection collection, ComplexImageComparator comparator, IcfSettings settings, ComparisonProgress comparisonProgress, ImageLoader imageLoader) {
+        Loader<IcfOptimizedImages> loader = new OptimizationsLoader(comparator.getImageComparators(), collection, imageLoader);
 
         IcfEnvironment environment = new IcfEnvironment(
                 comparator.getImageComparators(),
@@ -62,7 +64,7 @@ public class IcfEngineDispatcher {
 
 
     public ImageComparingResults findDuplicateOfInLibrary(IcfCollection collection, LoadableImage loadableImage, ComplexImageComparator comparator, IcfSettings settings) {
-        return findDuplicateOfInLibrary(collection, loadableImage, comparator, settings, getNullComparisonProgress());
+        return findDuplicateOfInLibrary(collection, loadableImage, comparator, settings, getNullComparisonProgress(), getImageLoader());
     }
 
     /**
@@ -73,9 +75,9 @@ public class IcfEngineDispatcher {
      * @throws AlgorithmFailureException if loadableImage could not be loaded
      * @return
      */
-    public ImageComparingResults findDuplicateOfInLibrary(IcfCollection collection, LoadableImage loadableImage, ComplexImageComparator comparator, IcfSettings settings, ComparisonProgress comparisonProgress) {
+    public ImageComparingResults findDuplicateOfInLibrary(IcfCollection collection, LoadableImage loadableImage, ComplexImageComparator comparator, IcfSettings settings, ComparisonProgress comparisonProgress, ImageLoader imageLoader) {
 
-        Loader<IcfOptimizedImages> loader = new OptimizationsLoader(comparator.getImageComparators(), collection);
+        Loader<IcfOptimizedImages> loader = new OptimizationsLoader(comparator.getImageComparators(), collection, imageLoader);
         IcfEnvironment environment = new IcfEnvironment(
                 comparator.getImageComparators(),
                 collection,
@@ -118,6 +120,16 @@ public class IcfEngineDispatcher {
 
             }
         };
+    }
+
+    private static ImageLoader imageLoader;
+
+    public synchronized static ImageLoader getImageLoader() {
+        if (imageLoader != null) {
+            return imageLoader;
+        }
+        imageLoader = new ImageLoaderImpl(Runtime.getRuntime().availableProcessors());
+        return imageLoader;
     }
 
 }

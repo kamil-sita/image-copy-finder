@@ -19,4 +19,5 @@ module icf.core {
     exports pl.ksitarski.icf.core.comparison.comparator;
     exports pl.ksitarski.icf.core.comparison.definitions;
     exports pl.ksitarski.icf.core.comparison.impls;
+    exports pl.ksitarski.icf.core.imageloader;
 }

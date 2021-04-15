@@ -490,7 +490,7 @@ public class GuiController {
                 Platform.runLater(() -> {
                     cutoffSlider.setValue(cic.getRecommendedCutoff() * 100);
                 });
-                imageComparingResults = new IcfEngineDispatcher().findDuplicatesInLibrary(icfDatabase, cic, new IcfSettings().setCutoffStrategy(IcfSettings.ACCEPT_ALL), getComparisonProgress());
+                imageComparingResults = new IcfEngineDispatcher().findDuplicatesInLibrary(icfDatabase, cic, new IcfSettings().setCutoffStrategy(IcfSettings.ACCEPT_ALL), getComparisonProgress(), IcfEngineDispatcher.getImageLoader());
             }
 
             @Override
@@ -536,7 +536,7 @@ public class GuiController {
                 });
                 imageComparingResults = null;
                 try {
-                    imageComparingResults = new IcfEngineDispatcher().findDuplicateOfInLibrary(icfDatabase, new LoadableImageFile(optionalFile.get().toPath()), cic, new IcfSettings().setCutoffStrategy(IcfSettings.ACCEPT_ALL), getComparisonProgress());
+                    imageComparingResults = new IcfEngineDispatcher().findDuplicateOfInLibrary(icfDatabase, new LoadableImageFile(optionalFile.get().toPath()), cic, new IcfSettings().setCutoffStrategy(IcfSettings.ACCEPT_ALL), getComparisonProgress(), IcfEngineDispatcher.getImageLoader());
                 } catch (AlgorithmFailureException e) {
                     Platform.runLater(() -> {
                         updateFeedback("Failed to load compared image, could not finish algorithm.");
