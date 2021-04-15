@@ -574,9 +574,17 @@ public class GuiController {
         int index = comparisonList.getSelectionModel().getSelectedIndex();
         double cutoff = cutoffSlider.getValue() / 100.0;
         ObservableList<ComparisonListElement> dbs = FXCollections.observableArrayList();
+
+        final int RESULTS_LIMIT = 10000;
+
+        int resultCount = 0;
         for (ImageComparingResult imageComparingResult : imageComparingResults.getResults()) {
             if (imageComparingResult.getEquality() >= cutoff) {
                 dbs.add(new ComparisonListElement(imageComparingResult));
+                resultCount++;
+            }
+            if (resultCount > RESULTS_LIMIT) {
+                break;
             }
         }
         comparisonList.setItems(dbs);

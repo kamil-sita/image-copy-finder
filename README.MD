@@ -164,3 +164,11 @@ ImageComparingResults imageComparingResults
         );
 
 ```
+
+# Tips
+
+It might be useful to call
+```java
+ImageIO.setUseCache(false);
+```
+before loading images with library default method, as this disables usage of cache on drive, speeding loading up. 
