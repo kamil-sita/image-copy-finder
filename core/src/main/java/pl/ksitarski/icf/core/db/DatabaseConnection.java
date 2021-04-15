@@ -66,6 +66,7 @@ public class DatabaseConnection implements AutoCloseable {
     public static List<ImageInDatabase> addOrFindFiles(IcfDbOrm database, String pathBase, List<String> paths) {
         var fileDao = new IcfFileDao();
         List<ImageInDatabase> returnList = new ArrayList<>();
+        List<IcfFileOrm> filesToSave = new ArrayList<>();
 
         for (String path : paths) {
             IcfFileOrm fileOrm = fileDao.getByPath(database.getId(), path);
@@ -84,10 +85,15 @@ public class DatabaseConnection implements AutoCloseable {
                     database
             );
 
-            fileDao.save(fileOrm);
-
-            returnList.add(fileOrm.toImageInDatabase());
+            filesToSave.add(fileOrm);
         }
+
+        fileDao.save(filesToSave);
+
+        for (IcfFileOrm savedFile : filesToSave) {
+            returnList.add(savedFile.toImageInDatabase());
+        }
+
         return returnList;
     }
 
