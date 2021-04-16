@@ -10,14 +10,14 @@ module icf.core {
     requires java.naming;
     requires org.slf4j;
 
-    exports pl.ksitarski.icf.core.db;
-    exports pl.ksitarski.icf.core.accessing;
-    exports pl.ksitarski.icf.core.comparison;
-    exports pl.ksitarski.icf.core.image;
-    exports pl.ksitarski.icf.core.exc;
-    exports pl.ksitarski.icf.core.comparison.engine;
-    exports pl.ksitarski.icf.core.comparison.comparator;
-    exports pl.ksitarski.icf.core.comparison.definitions;
-    exports pl.ksitarski.icf.core.comparison.impls;
-    exports pl.ksitarski.icf.core.imageloader;
+    exports pl.ksitarski.icf.core.prototype.db;
+    exports pl.ksitarski.icf.core.prototype.accessing;
+    exports pl.ksitarski.icf.core.prototype.comparison;
+    exports pl.ksitarski.icf.core.prototype.image;
+    exports pl.ksitarski.icf.core.prototype.exc;
+    exports pl.ksitarski.icf.core.prototype.comparison.engine;
+    exports pl.ksitarski.icf.core.prototype.comparison.comparator;
+    exports pl.ksitarski.icf.core.prototype.comparison.definitions;
+    exports pl.ksitarski.icf.core.prototype.comparison.impls;
+    exports pl.ksitarski.icf.core.prototype.imageloader;
 }

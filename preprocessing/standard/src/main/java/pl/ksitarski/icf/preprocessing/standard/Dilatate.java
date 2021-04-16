@@ -1,7 +1,7 @@
 package pl.ksitarski.icf.preprocessing.standard;
 
-import pl.ksitarski.icf.core.comparison.definitions.ImageComparator;
-import pl.ksitarski.icf.core.comparison.comparator.ImagePreprocessor;
+import pl.ksitarski.icf.core.prototype.comparison.definitions.ImageComparator;
+import pl.ksitarski.icf.core.prototype.comparison.comparator.ImagePreprocessor;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;

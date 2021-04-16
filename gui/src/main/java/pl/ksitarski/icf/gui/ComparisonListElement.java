@@ -1,7 +1,7 @@
 package pl.ksitarski.icf.gui;
 
-import pl.ksitarski.icf.core.accessing.LoadableImage;
-import pl.ksitarski.icf.core.comparison.ImageComparingResult;
+import pl.ksitarski.icf.core.prototype.accessing.LoadableImage;
+import pl.ksitarski.icf.core.prototype.comparison.ImageComparingResult;
 
 public class ComparisonListElement {
     private LoadableImage loadableImage0;

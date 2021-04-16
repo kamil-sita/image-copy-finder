@@ -1,15 +1,15 @@
 package pl.ksitarski.icf.preprocessing.standard;
 
-import pl.ksitarski.icf.core.comparison.definitions.ImageComparator;
-import pl.ksitarski.icf.core.comparison.comparator.ImagePreprocessor;
-import pl.ksitarski.icf.core.util.IntArgb;
+import pl.ksitarski.icf.core.prototype.comparison.definitions.ImageComparator;
+import pl.ksitarski.icf.core.prototype.comparison.comparator.ImagePreprocessor;
+import pl.ksitarski.icf.core.prototype.util.IntArgb;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.DataBufferInt;
 import java.awt.image.Kernel;
 
-import static pl.ksitarski.icf.core.util.IntArgb.*;
+import static pl.ksitarski.icf.core.prototype.util.IntArgb.*;
 
 public class EdgeDetection extends ImagePreprocessor {
     public EdgeDetection(ImageComparator imageComparator) {

@@ -1,9 +1,9 @@
 package pl.ksitarski.icf.comparator.jimagehash.util;
 
 import com.github.kilianB.hash.Hash;
-import pl.ksitarski.icf.core.accessing.LoadableImage;
-import pl.ksitarski.icf.core.comparison.definitions.ImageComparator;
-import pl.ksitarski.icf.core.image.IcfOptimizedImage;
+import pl.ksitarski.icf.core.prototype.accessing.LoadableImage;
+import pl.ksitarski.icf.core.prototype.comparison.definitions.ImageComparator;
+import pl.ksitarski.icf.core.prototype.image.IcfOptimizedImage;
 
 import java.util.Objects;
 

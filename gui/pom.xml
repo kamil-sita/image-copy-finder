@@ -6,7 +6,7 @@
 
     <groupId>pl.ksitarski.icf.gui</groupId>
     <artifactId>icf-gui</artifactId>
-    <version>1.1.0</version>
+    <version>2.0.0</version>
 
     <properties>
         <platform>win</platform>
@@ -92,19 +92,19 @@
         <dependency>
             <groupId>pl.ksitarski.icf.core</groupId>
             <artifactId>icf-core</artifactId>
-            <version>1.1.0</version>
+            <version>2.0.0</version>
         </dependency>
 
         <dependency>
             <groupId>pl.ksitarski.icf.comparator.jimagehash</groupId>
             <artifactId>icf-comparator-jimagehash</artifactId>
-            <version>1.1.0</version>
+            <version>2.0.0</version>
         </dependency>
 
         <dependency>
             <groupId>pl.ksitarski.icf.comparator.standard</groupId>
             <artifactId>icf-comparator-standard</artifactId>
-            <version>1.1.0</version>
+            <version>2.0.0</version>
         </dependency>
 
         <dependency>

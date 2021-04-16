@@ -10,7 +10,7 @@
     </parent>
     <groupId>pl.ksitarski.icf.web</groupId>
     <artifactId>icf-web</artifactId>
-    <version>1.1.0</version>
+    <version>2.0.0</version>
     <name>icf-web</name>
     <description>Demo project for Spring Boot</description>
     <properties>
@@ -48,7 +48,7 @@
         <dependency>
             <groupId>pl.ksitarski.icf.core</groupId>
             <artifactId>icf-core</artifactId>
-            <version>1.1.0</version>
+            <version>2.0.0</version>
         </dependency>
 
 

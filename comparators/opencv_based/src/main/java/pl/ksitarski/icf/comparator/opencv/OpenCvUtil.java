@@ -5,7 +5,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
-import pl.ksitarski.icf.core.exc.WrapperException;
+import pl.ksitarski.icf.core.prototype.exc.WrapperException;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import static org.opencv.core.CvType.*;
-import static pl.ksitarski.icf.core.util.ConversionUtil.*;
+import static pl.ksitarski.icf.core.prototype.util.ConversionUtil.*;
 
 public class OpenCvUtil {
     public static BufferedImage toBufferedImage(Mat input) {

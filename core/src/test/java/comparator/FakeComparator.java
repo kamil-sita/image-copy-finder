@@ -1,9 +1,9 @@
 package comparator;
 
-import pl.ksitarski.icf.core.accessing.ImageInDatabase;
-import pl.ksitarski.icf.core.comparison.definitions.ImageComparator;
-import pl.ksitarski.icf.core.image.IcfImage;
-import pl.ksitarski.icf.core.image.IcfOptimizedImage;
+import pl.ksitarski.icf.core.prototype.accessing.ImageInDatabase;
+import pl.ksitarski.icf.core.prototype.comparison.definitions.ImageComparator;
+import pl.ksitarski.icf.core.prototype.image.IcfImage;
+import pl.ksitarski.icf.core.prototype.image.IcfOptimizedImage;
 
 public class FakeComparator extends ImageComparator {
 

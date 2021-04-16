@@ -4,10 +4,10 @@ import com.github.kilianB.hashAlgorithms.DifferenceHash;
 import pl.ksitarski.icf.comparator.jimagehash.JihDHash;
 import pl.ksitarski.icf.comparator.jimagehash.JihPHash;
 import pl.ksitarski.icf.comparator.jimagehash.JihWaveletHash;
-import pl.ksitarski.icf.core.comparison.ImageComparingResult;
-import pl.ksitarski.icf.core.comparison.comparator.ComplexImageComparator;
-import pl.ksitarski.icf.core.comparison.definitions.ImageComparator;
-import pl.ksitarski.icf.core.image.IcfOptimizedImages;
+import pl.ksitarski.icf.core.prototype.comparison.ImageComparingResult;
+import pl.ksitarski.icf.core.prototype.comparison.comparator.ComplexImageComparator;
+import pl.ksitarski.icf.core.prototype.comparison.definitions.ImageComparator;
+import pl.ksitarski.icf.core.prototype.image.IcfOptimizedImages;
 
 import java.util.Set;
 

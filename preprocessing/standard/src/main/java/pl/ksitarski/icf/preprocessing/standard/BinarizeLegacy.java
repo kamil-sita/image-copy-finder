@@ -1,15 +1,15 @@
 package pl.ksitarski.icf.preprocessing.standard;
 
-import pl.ksitarski.icf.core.comparison.definitions.ImageComparator;
-import pl.ksitarski.icf.core.comparison.comparator.ImagePreprocessor;
-import pl.ksitarski.icf.core.util.IntArgb;
+import pl.ksitarski.icf.core.prototype.comparison.definitions.ImageComparator;
+import pl.ksitarski.icf.core.prototype.comparison.comparator.ImagePreprocessor;
+import pl.ksitarski.icf.core.prototype.util.IntArgb;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.util.ArrayList;
 import java.util.List;
 
-import static pl.ksitarski.icf.core.util.IntArgb.*;
+import static pl.ksitarski.icf.core.prototype.util.IntArgb.*;
 /**
  * This operator assumes that this image is in greyscale.
  */

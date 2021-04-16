@@ -1,13 +1,13 @@
 package pl.ksitarski.icf.preprocessing.standard;
 
-import pl.ksitarski.icf.core.comparison.definitions.ImageComparator;
-import pl.ksitarski.icf.core.comparison.comparator.ImagePreprocessor;
-import pl.ksitarski.icf.core.util.IntArgb;
+import pl.ksitarski.icf.core.prototype.comparison.definitions.ImageComparator;
+import pl.ksitarski.icf.core.prototype.comparison.comparator.ImagePreprocessor;
+import pl.ksitarski.icf.core.prototype.util.IntArgb;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
-import static pl.ksitarski.icf.core.util.IntArgb.*;
+import static pl.ksitarski.icf.core.prototype.util.IntArgb.*;
 
 public class ColorNormalizer extends ImagePreprocessor {
     public ColorNormalizer(ImageComparator imageComparator) {

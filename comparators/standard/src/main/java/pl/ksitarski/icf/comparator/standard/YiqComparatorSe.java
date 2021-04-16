@@ -1,18 +1,18 @@
 package pl.ksitarski.icf.comparator.standard;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
-import pl.ksitarski.icf.core.accessing.ImageInDatabase;
-import pl.ksitarski.icf.core.accessing.LoadableImage;
-import pl.ksitarski.icf.core.comparison.definitions.ImageComparator;
-import pl.ksitarski.icf.core.image.IcfImage;
-import pl.ksitarski.icf.core.image.IcfOptimizedImage;
-import pl.ksitarski.icf.core.util.ConversionUtil;
-import pl.ksitarski.icf.core.util.IntArgb;
+import pl.ksitarski.icf.core.prototype.accessing.ImageInDatabase;
+import pl.ksitarski.icf.core.prototype.accessing.LoadableImage;
+import pl.ksitarski.icf.core.prototype.comparison.definitions.ImageComparator;
+import pl.ksitarski.icf.core.prototype.image.IcfImage;
+import pl.ksitarski.icf.core.prototype.image.IcfOptimizedImage;
+import pl.ksitarski.icf.core.prototype.util.ConversionUtil;
+import pl.ksitarski.icf.core.prototype.util.IntArgb;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
-import static pl.ksitarski.icf.core.util.IntArgb.*;
+import static pl.ksitarski.icf.core.prototype.util.IntArgb.*;
 
 public class YiqComparatorSe extends ImageComparator {
     public YiqComparatorSe() {
